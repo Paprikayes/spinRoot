@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Canvas Test</title>
+</head>
+<body>
+<section>
+
+
+<div>
+<canvas id="canvas" width="800" height="600">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+</div>
+
+
+<script type="text/javascript">
+var canvas;
+var ctx;
+var dx = 2;
+var dy = 2;
+var x = 400;
+var y = 300;
+var WIDTH = 800;
+var HEIGHT = 600;
+
+
+function circle(x,y,r) {
+ctx.beginPath();
+ctx.arc(x, y, r, 0, Math.PI*2, true);
+ctx.fill();
+}
+
+
+function rect(x,y,w,h) {
+ctx.beginPath();
+ctx.rect(x,y,w,h);
+ctx.closePath();
+ctx.fill();
+ctx.stroke();
+}
+
+
+function clear() {
+ctx.clearRect(0, 0, WIDTH, HEIGHT);
+}
+
+
+function init() {
+canvas = document.getElementById("canvas");
+ctx = canvas.getContext("2d");
+return setInterval(draw, 10);
+}
+
+
+//instead of doKeyDown function in original, i added
+//an array and three functions:
+//key mgmt
+var keys = new Array();
+function doKeyDown(evt){
+keys[evt.keyCode] = true;
+}
+function doKeyUp(evt){
+keys[evt.keyCode] = false;
+}
+function move(){
+if (38 in keys && keys[38]){
+	if (y > 20 )
+{ //up
+y -= dy;
+}
+
+
+}
+if (40 in keys && keys[40]){ //down
+if ( y < 580  )
+{
+y += dy;
+}
+}
+if (37 in keys && keys[37]){ //left
+if ( x > 20 )
+{
+x -= dx;
+}
+}
+if (39 in keys && keys[39]){ //right
+if ( x < 780 )
+{
+x += dx;
+}
+}
+}
+//...
+
+
+//i rearranged function "draw":
+function draw() {
+//movement, other between frame logic
+move();
+//stage maintenence
+clear();
+ctx.fillStyle = "white";
+ctx.strokeStyle = "black";
+rect(0,0,WIDTH,HEIGHT);
+//draw actor
+ctx.fillStyle = "red";
+circle(x, y, 20);
+}
+//...
+
+
+init();
+window.addEventListener('keydown',doKeyDown,true);
+window.addEventListener('keyup',doKeyUp,true);
+
+
+</script>
+</section>
+</body>
+</html>
